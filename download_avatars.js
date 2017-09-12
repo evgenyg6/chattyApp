@@ -25,7 +25,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
   var string = '';
   console.log(requestURL);
  
-  var object = { //adds user-agent object with your ID
+  var object = { //create user-agent object with your ID
     url: requestURL,
     headers: {
       "User-Agent": "evgenyg6"
