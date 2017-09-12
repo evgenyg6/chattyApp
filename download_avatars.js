@@ -11,6 +11,8 @@ var repoName = process.argv[3];
 function checkArguments(owner, name) {
   if (owner === undefined || name === undefined) {
     console.log("Please enter valid an owner and name!");
+  } else if (process.argv.length > 4) {
+    console.log("Please enter less arguments, there are too many!")
   } else {
     console.log('Welcome to the GitHub Avatar Downloader!');
     getRepoContributors(repoOwner, repoName, getAvatar);
@@ -54,7 +56,7 @@ function getAvatar(jaSON) { //loops through .avatar_url and logs
   } //iterates through everyone's avatar_url, places them in folder 'avatars', itirates through each login name and assigns it to file
 }
 
-function downloadImageByURL(url, filePath, username) { // This function downloaded the files to an avatars folder and names the files to the login plus extensions of the file types (eg. png or jpeg)
+function downloadImageByURL(url, filePath, username) { // This function downloads the files to a folder of choosing, names the file to user login, and adds an extension to each
   var stream = request.get(url)
     .on('error', function(err) {
       throw err;
