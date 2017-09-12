@@ -54,20 +54,22 @@ function getAvatar(jaSON) { //loops through .avatar_url and logs
   } //iterates through everyone's avatar_url, places them in folder 'avatars', itirates through each login name and assigns it to file
 }
 
-function downloadImageByURL(url, filePath, userName) {
-
-  request.get(url)
-    .on('error', function(err) { //on error
-      console.log(err);
+function downloadImageByURL(url, filePath, username) { // This function downloaded the files to an avatars folder and names the files to the login plus extensions of the file types (eg. png or jpeg)
+  var stream = request.get(url)
+    .on('error', function(err) {
+      throw err;
     })
-
-  .on('data', function(data) { //on data recieving
-    console.log('Downloading images... ');
-  })
-
-  .on('end', function() { //on data recieve end
-    console.log("Download complete!");
-  }).pipe(fs.createWriteStream(filePath + "/" + userName));
+    .on('response', function(response) {
+      extension = response.headers["content-type"].split("/")
+      if (!fs.existsSync(filePath)) {
+        fs.mkdirSync(filePath);
+      }
+      console.log('Downloading image...');
+      stream.pipe(fs.createWriteStream(filePath + "/" + username + "." + extension[1]));
+    })
+    .on('end', function(response) {
+      console.log('Download complete.');
+    })
 
 }
 checkArguments(repoOwner, repoName);
